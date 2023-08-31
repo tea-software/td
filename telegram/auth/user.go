@@ -58,6 +58,8 @@ type SendCodeOptions struct {
 	// If a token that will be included in eventually sent SMSs is required:
 	// required in newer versions of android, to use the android SMS receiver APIs.
 	AllowAppHash bool
+	// ...
+	AllowFirebase bool
 }
 
 // SendCode requests code for provided phone number, returning code hash
@@ -74,6 +76,9 @@ func (c *Client) SendCode(ctx context.Context, phone string, options SendCodeOpt
 	}
 	if options.CurrentNumber {
 		settings.SetCurrentNumber(true)
+	}
+	if options.AllowFirebase {
+		settings.SetAllowFirebase(true)
 	}
 
 	sentCode, err := c.api.AuthSendCode(ctx, &tg.AuthSendCodeRequest{
